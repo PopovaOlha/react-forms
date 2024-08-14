@@ -8,9 +8,6 @@ const Header: React.FC = () => {
         <nav>
           <ul>
             <li>
-              <Link to="/">Main</Link>
-            </li>
-            <li>
               <Link to="/uncontrolled">Uncontrolled Form</Link>
             </li>
             <li>

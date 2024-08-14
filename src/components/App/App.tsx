@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import Main from '../../pages/Main/Main';
-import UncontrolledForm from '../UncontrolledForm/UncontrolledForm';
+import UncontrolledFormPage from '../../pages/UncontrolledFormPage/UncontrolledFormPage';
 
 const App: React.FC = () => {
   return (
@@ -9,7 +9,7 @@ const App: React.FC = () => {
       <Router>
         <Routes>
           <Route path="/" element={<Main />} />
-          <Route path="/uncontrolled" element={<UncontrolledForm />} />
+          <Route path="/uncontrolled" element={<UncontrolledFormPage />} />
           <Route></Route>
         </Routes>
       </Router>
