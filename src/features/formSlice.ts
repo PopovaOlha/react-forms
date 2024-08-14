@@ -1,21 +1,35 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { FormState } from '../types/interfaces';
 
-const initialState: FormState = {
-  name: '',
-  email: '',
+interface FormsState {
+  controlledForm: FormState;
+  uncontrolledForm: FormState;
+}
+
+const initialState: FormsState = {
+  controlledForm: {
+    name: '',
+    email: '',
+  },
+  uncontrolledForm: {
+    name: '',
+    email: '',
+  },
 };
 
 const formSlice = createSlice({
   name: 'form',
   initialState,
   reducers: {
-    updateForm: (state, action: PayloadAction<FormState>) => {
-      state.name = action.payload.name;
-      state.email = action.payload.email;
+    updateControlledForm: (state, action: PayloadAction<FormState>) => {
+      state.controlledForm = action.payload;
+    },
+    updateUncontrolledForm: (state, action: PayloadAction<FormState>) => {
+      state.uncontrolledForm = action.payload;
     },
   },
 });
 
-export const { updateForm } = formSlice.actions;
+export const { updateControlledForm, updateUncontrolledForm } =
+  formSlice.actions;
 export default formSlice.reducer;

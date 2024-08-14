@@ -3,7 +3,4 @@ export interface IFormInputs {
   email: string;
 }
 
-export interface FormState {
-  name: string;
-  email: string;
-}
+export interface FormState extends IFormInputs {}
