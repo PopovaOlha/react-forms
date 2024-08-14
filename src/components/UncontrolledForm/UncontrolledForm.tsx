@@ -1,15 +1,18 @@
 import React, { useRef } from 'react';
+import { useDispatch } from 'react-redux';
+import { updateUncontrolledForm } from '../../features/formSlice';
 import styles from './UncontrolledForm.module.css';
 
 const UncontrolledForm: React.FC = () => {
+  const dispatch = useDispatch();
   const nameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const name = nameRef.current?.value;
-    const email = emailRef.current?.value;
-    console.log(name, email);
+    const name = nameRef.current?.value || '';
+    const email = emailRef.current?.value || '';
+    dispatch(updateUncontrolledForm({ name, email }));
   };
 
   return (
