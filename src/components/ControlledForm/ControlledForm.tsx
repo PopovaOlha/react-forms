@@ -1,5 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
+import { updateControlledForm } from '../../features/formSlice';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { IFormInputs } from '../../types/interfaces';
@@ -11,6 +13,7 @@ const schema = Yup.object().shape({
 });
 
 const ControlledForm: React.FC = () => {
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -20,7 +23,7 @@ const ControlledForm: React.FC = () => {
   });
 
   const onSubmit = (data: IFormInputs) => {
-    console.log(data);
+    dispatch(updateControlledForm(data));
   };
 
   return (
