@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import styles from './UncontrolledForm.module.css';
 
 const UncontrolledForm: React.FC = () => {
   const nameRef = useRef<HTMLInputElement>(null);
@@ -12,16 +13,27 @@ const UncontrolledForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label htmlFor="name">Name:</label>
-        <input type="text" id="name" ref={nameRef} />
+    <form className={styles.form} onSubmit={handleSubmit}>
+      <div className={styles.formGroup}>
+        <label className={styles.label} htmlFor="name">
+          Name:
+        </label>
+        <input className={styles.input} type="text" id="name" ref={nameRef} />
       </div>
-      <div>
-        <label htmlFor="email">Email:</label>
-        <input type="email" id="email" ref={emailRef} />
+      <div className={styles.formGroup}>
+        <label className={styles.label} htmlFor="email">
+          Email:
+        </label>
+        <input
+          className={styles.input}
+          type="email"
+          id="email"
+          ref={emailRef}
+        />
       </div>
-      <button type="submit">Submit</button>
+      <button className={styles.submitButton} type="submit">
+        Submit
+      </button>
     </form>
   );
 };

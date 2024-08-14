@@ -1,15 +1,19 @@
-.page {
-  padding: 20px;
+.header {
+  background-color: #ffffff;
+  padding: 20px 0;
+  border-bottom: 1px solid #ddd;
 }
 
 .navList {
+  display: flex;
+  justify-content: center;
   list-style-type: none;
   padding: 0;
   margin: 0;
 }
 
 .navItem {
-  margin-bottom: 15px;
+  margin: 0 15px;
 }
 
 .navLink {
@@ -21,8 +25,4 @@
 
 .navLink:hover {
   color: #ff6f61;
-}
-
-.main {
-  margin-top: 20px;
 }
