@@ -9,11 +9,25 @@ interface FormsState {
 const initialState: FormsState = {
   controlledForm: {
     name: '',
+    age: '',
     email: '',
+    password1: '',
+    password2: '',
+    gender: '',
+    country: '',
+    terms: false,
+    picture: null,
   },
   uncontrolledForm: {
     name: '',
+    age: '',
     email: '',
+    password1: '',
+    password2: '',
+    country: '',
+    gender: '',
+    terms: false,
+    picture: null,
   },
 };
 
