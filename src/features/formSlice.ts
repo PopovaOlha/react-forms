@@ -2,8 +2,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { FormState } from '../types/interfaces';
 
 interface FormsState {
-  controlledForm: FormState;
-  uncontrolledForm: FormState;
+  controlledForm: Omit<FormState, 'picture'> & { pictureURL: string | null };
+  uncontrolledForm: Omit<FormState, 'picture'> & { pictureURL: string | null };
 }
 
 const initialState: FormsState = {
@@ -16,7 +16,7 @@ const initialState: FormsState = {
     gender: '',
     country: '',
     terms: false,
-    picture: null,
+    pictureURL: null,
   },
   uncontrolledForm: {
     name: '',
@@ -24,10 +24,10 @@ const initialState: FormsState = {
     email: '',
     password1: '',
     password2: '',
-    country: '',
     gender: '',
+    country: '',
     terms: false,
-    picture: null,
+    pictureURL: null,
   },
 };
 
@@ -35,10 +35,20 @@ const formSlice = createSlice({
   name: 'form',
   initialState,
   reducers: {
-    updateControlledForm: (state, action: PayloadAction<FormState>) => {
+    updateControlledForm: (
+      state,
+      action: PayloadAction<
+        Omit<FormState, 'picture'> & { pictureURL: string | null }
+      >,
+    ) => {
       state.controlledForm = action.payload;
     },
-    updateUncontrolledForm: (state, action: PayloadAction<FormState>) => {
+    updateUncontrolledForm: (
+      state,
+      action: PayloadAction<
+        Omit<FormState, 'picture'> & { pictureURL: string | null }
+      >,
+    ) => {
       state.uncontrolledForm = action.payload;
     },
   },

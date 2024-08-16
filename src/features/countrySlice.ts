@@ -3,12 +3,12 @@ import { countries } from '../constants/constants';
 
 interface CountryState {
   countries: string[];
-  selectedCountry: string;
+  selectCountry: string;
 }
 
 const initialState: CountryState = {
   countries: countries,
-  selectedCountry: '',
+  selectCountry: '',
 };
 
 const countrySlice = createSlice({
@@ -19,7 +19,7 @@ const countrySlice = createSlice({
       state.countries = action.payload;
     },
     selectCountry: (state, action: PayloadAction<string>) => {
-      state.selectedCountry = action.payload;
+      state.selectCountry = action.payload;
     },
   },
 });

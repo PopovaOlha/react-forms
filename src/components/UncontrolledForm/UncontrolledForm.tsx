@@ -9,21 +9,13 @@ import styles from './UncontrolledForm.module.css';
 import { RefKeys } from '../../types/interfaces';
 import { selectCountries } from '../../features/selectors';
 
-const convertFileToBase64 = (file: File): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = () => resolve(reader.result as string);
-    reader.onerror = reject;
-  });
-};
-
 const UncontrolledForm: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const refs = useFormRefs();
   const countries = useSelector(selectCountries);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [pictureURL, setPictureURL] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,9 +27,10 @@ const UncontrolledForm: React.FC = () => {
 
     if (!isValid) return;
 
-    const pictureBase64 = refs.picture.current?.files?.[0]
-      ? await convertFileToBase64(refs.picture.current.files[0])
-      : '';
+    const pictureFile = refs.picture.current?.files?.[0] || null;
+    if (pictureFile) {
+      setPictureURL(URL.createObjectURL(pictureFile));
+    }
 
     dispatch(
       updateUncontrolledForm({
@@ -48,7 +41,7 @@ const UncontrolledForm: React.FC = () => {
         password2: refs.password2.current?.value || '',
         gender: refs.gender.current?.value || '',
         terms: refs.terms.current?.checked || false,
-        picture: pictureBase64,
+        pictureURL: pictureURL || null,
         country: refs.country.current?.value || '',
       }),
     );
@@ -190,7 +183,13 @@ const UncontrolledForm: React.FC = () => {
           type="file"
           id="picture"
           ref={refs.picture}
-          onChange={() => validateField('picture', refs, setErrors)}
+          onChange={() => {
+            validateField('picture', refs, setErrors);
+            const file = refs.picture.current?.files?.[0] || null;
+            if (file) {
+              setPictureURL(URL.createObjectURL(file));
+            }
+          }}
         />
         {errors.picture && (
           <ErrorMessages errors={{ picture: errors.picture }} />

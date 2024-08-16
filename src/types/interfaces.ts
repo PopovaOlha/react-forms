@@ -7,7 +7,7 @@ export interface IFormInputs {
   gender: string;
   country: string;
   terms: boolean;
-  picture: string | File | null;
+  picture: string | null;
 }
 
 export interface FormState extends IFormInputs {}

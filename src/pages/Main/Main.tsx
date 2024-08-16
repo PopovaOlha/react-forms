@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import Header from '../../components/Header/Header';
@@ -12,36 +12,26 @@ const MainPage: React.FC = () => {
     (state: RootState) => state.form.uncontrolledForm,
   );
 
-  // Helper function to create a URL for the image
-  const createImageURL = (file: File | null) => {
-    if (file) {
-      return URL.createObjectURL(file);
+  const createImageURL = (fileURL: string | null) => {
+    if (fileURL) {
+      return fileURL;
     }
     return '';
   };
 
-  // Clean up URLs when the component unmounts
-  React.useEffect(() => {
-    return () => {
-      // Revoke object URLs to free up memory
-      if (uncontrolledForm.picture) {
-        URL.revokeObjectURL(createImageURL(uncontrolledForm.picture));
-      }
-      if (controlledForm.picture) {
-        URL.revokeObjectURL(createImageURL(controlledForm.picture));
-      }
-    };
-  }, [uncontrolledForm.picture, controlledForm.picture]);
-
-  // Use memoized URLs to avoid unnecessary re-renders
   const uncontrolledImageURL = useMemo(
-    () => createImageURL(uncontrolledForm.picture),
-    [uncontrolledForm.picture],
+    () => createImageURL(uncontrolledForm.pictureURL),
+    [uncontrolledForm.pictureURL],
   );
+
   const controlledImageURL = useMemo(
-    () => createImageURL(controlledForm.picture),
-    [controlledForm.picture],
+    () => createImageURL(controlledForm.pictureURL),
+    [controlledForm.pictureURL],
   );
+
+  useEffect(() => {
+    return () => {};
+  }, [uncontrolledForm.pictureURL, controlledForm.pictureURL]);
 
   return (
     <>
@@ -52,13 +42,13 @@ const MainPage: React.FC = () => {
           <div className={styles.tile}>
             <h2>Uncontrolled Form</h2>
             <p>
-              <strong>Name:</strong> {uncontrolledForm.name}
+              <strong>Name:</strong> {uncontrolledForm.name || 'N/A'}
             </p>
             <p>
-              <strong>Age:</strong> {uncontrolledForm.age}
+              <strong>Age:</strong> {uncontrolledForm.age || 'N/A'}
             </p>
             <p>
-              <strong>Email:</strong> {uncontrolledForm.email}
+              <strong>Email:</strong> {uncontrolledForm.email || 'N/A'}
             </p>
             <p>
               <strong>Password:</strong>{' '}
@@ -76,8 +66,8 @@ const MainPage: React.FC = () => {
               {uncontrolledForm.terms ? 'Yes' : 'No'}
             </p>
             <p>
-              <strong>Picture:</strong>{' '}
-              {uncontrolledForm.picture ? (
+              <strong>Picture:</strong>
+              {uncontrolledForm.pictureURL ? (
                 <img
                   src={uncontrolledImageURL}
                   alt="Uploaded"
@@ -91,13 +81,13 @@ const MainPage: React.FC = () => {
           <div className={styles.tile}>
             <h2>Controlled Form</h2>
             <p>
-              <strong>Name:</strong> {controlledForm.name}
+              <strong>Name:</strong> {controlledForm.name || 'N/A'}
             </p>
             <p>
-              <strong>Age:</strong> {controlledForm.age}
+              <strong>Age:</strong> {controlledForm.age || 'N/A'}
             </p>
             <p>
-              <strong>Email:</strong> {controlledForm.email}
+              <strong>Email:</strong> {controlledForm.email || 'N/A'}
             </p>
             <p>
               <strong>Password:</strong>{' '}
@@ -115,8 +105,8 @@ const MainPage: React.FC = () => {
               {controlledForm.terms ? 'Yes' : 'No'}
             </p>
             <p>
-              <strong>Picture:</strong>{' '}
-              {controlledForm.picture ? (
+              <strong>Picture:</strong>
+              {controlledForm.pictureURL ? (
                 <img
                   src={controlledImageURL}
                   alt="Uploaded"
