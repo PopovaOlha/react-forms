@@ -22,3 +22,17 @@ export type RefKeys =
   | 'picture'
   | 'terms'
   | 'country';
+
+export interface FormTileProps {
+  title: string;
+  formData: {
+    name: string;
+    age: string;
+    email: string;
+    password1: string;
+    password2: string;
+    gender: string;
+    terms: boolean;
+    pictureURL: string | null;
+  };
+}

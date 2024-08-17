@@ -8,6 +8,12 @@ import { ErrorMessages } from '../../components/ErrorMessages/ErrorMessages';
 import styles from './UncontrolledForm.module.css';
 import { RefKeys } from '../../types/interfaces';
 import { selectCountries } from '../../features/selectors';
+import { passwordStrength } from '../../utils/passwordStrength';
+import {
+  STRENGTH_MODERATE,
+  STRENGTH_STRONG,
+  STRENGTH_WEAK,
+} from '../../constants/constants';
 
 const UncontrolledForm: React.FC = () => {
   const dispatch = useDispatch();
@@ -16,6 +22,20 @@ const UncontrolledForm: React.FC = () => {
   const countries = useSelector(selectCountries);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [pictureURL, setPictureURL] = useState<string | null>(null);
+  const [passwordStrengthLevel, setPasswordStrengthLevel] = useState<number>(0);
+  const [passwordStrengthClass, setPasswordStrengthClass] =
+    useState<string>('weak');
+
+  const convertToBase64 = (
+    file: File,
+    callback: (base64String: string) => void,
+  ) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      callback(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,8 +48,15 @@ const UncontrolledForm: React.FC = () => {
     if (!isValid) return;
 
     const pictureFile = refs.picture.current?.files?.[0] || null;
+    let pictureURL: string | null = null;
+
     if (pictureFile) {
-      setPictureURL(URL.createObjectURL(pictureFile));
+      await new Promise<void>((resolve) => {
+        convertToBase64(pictureFile, (base64String) => {
+          pictureURL = base64String;
+          resolve();
+        });
+      });
     }
 
     dispatch(
@@ -51,6 +78,35 @@ const UncontrolledForm: React.FC = () => {
     });
 
     navigate('/');
+  };
+
+  const handlePasswordChange = () => {
+    const passwordValue = refs.password1.current?.value || '';
+    const strength = passwordStrength(passwordValue);
+
+    let strengthLevel = STRENGTH_WEAK.level;
+    let strengthClass = STRENGTH_WEAK.class;
+
+    if (strength === 'Moderate') {
+      strengthLevel = STRENGTH_MODERATE.level;
+      strengthClass = STRENGTH_MODERATE.class;
+    } else if (strength === 'Strong') {
+      strengthLevel = STRENGTH_STRONG.level;
+      strengthClass = STRENGTH_STRONG.class;
+    }
+
+    setPasswordStrengthLevel(strengthLevel);
+    setPasswordStrengthClass(strengthClass);
+    validateField('password1', refs, setErrors);
+  };
+  const handleFileChange = () => {
+    validateField('picture', refs, setErrors);
+    const file = refs.picture.current?.files?.[0] || null;
+    if (file) {
+      convertToBase64(file, (base64String) => {
+        setPictureURL(base64String);
+      });
+    }
   };
 
   return (
@@ -103,11 +159,17 @@ const UncontrolledForm: React.FC = () => {
           type="password"
           id="password1"
           ref={refs.password1}
-          onChange={() => validateField('password1', refs, setErrors)}
+          onChange={handlePasswordChange}
         />
         {errors.password1 && (
           <ErrorMessages errors={{ password1: errors.password1 }} />
         )}
+        <div className={styles.passwordStrength}>
+          <div
+            className={`${styles.strengthIndicator} ${styles[passwordStrengthClass]}`}
+            style={{ width: `${passwordStrengthLevel}%` }}
+          ></div>
+        </div>
       </div>
       <div className={styles.formGroup}>
         <label className={styles.label} htmlFor="password2">
@@ -183,17 +245,12 @@ const UncontrolledForm: React.FC = () => {
           type="file"
           id="picture"
           ref={refs.picture}
-          onChange={() => {
-            validateField('picture', refs, setErrors);
-            const file = refs.picture.current?.files?.[0] || null;
-            if (file) {
-              setPictureURL(URL.createObjectURL(file));
-            }
-          }}
+          onChange={handleFileChange}
         />
         {errors.picture && (
           <ErrorMessages errors={{ picture: errors.picture }} />
         )}
+        {pictureURL && <div className={styles.picturePreview}></div>}
       </div>
       <button className={styles.submitButton} type="submit">
         Submit

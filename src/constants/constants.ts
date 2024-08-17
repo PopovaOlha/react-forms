@@ -237,3 +237,7 @@ export const countries = [
   'Zambia',
   'Zimbabwe',
 ];
+
+export const STRENGTH_WEAK = { level: 33, class: 'weak' };
+export const STRENGTH_MODERATE = { level: 66, class: 'moderate' };
+export const STRENGTH_STRONG = { level: 100, class: 'strong' };
