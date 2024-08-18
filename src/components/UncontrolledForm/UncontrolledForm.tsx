@@ -28,6 +28,8 @@ const UncontrolledForm: React.FC = () => {
     useState<string>('weak');
   console.log(pictureURL);
 
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -46,15 +48,13 @@ const UncontrolledForm: React.FC = () => {
         },
         { abortEarly: false },
       );
+
       const pictureFile = refs.picture.current?.files?.[0] || null;
       let pictureURL: string | null = null;
 
       if (pictureFile) {
-        await new Promise<void>((resolve) => {
-          convertToBase64(pictureFile, (base64String) => {
-            pictureURL = base64String;
-            resolve();
-          });
+        pictureURL = await new Promise<string>((resolve) => {
+          convertToBase64(pictureFile, resolve);
         });
       }
 
@@ -79,17 +79,7 @@ const UncontrolledForm: React.FC = () => {
       navigate('/');
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
-        const newErrors: FormErrors = {
-          name: '',
-          age: '',
-          email: '',
-          password1: '',
-          password2: '',
-          gender: '',
-          terms: '',
-          picture: '',
-          country: '',
-        };
+        const newErrors: FormErrors = {};
         err.inner.forEach((error) => {
           if (error.path) {
             newErrors[error.path] = error.message;
@@ -171,13 +161,21 @@ const UncontrolledForm: React.FC = () => {
         <label className={styles.label} htmlFor="password1">
           Password:
         </label>
-        <input
-          className={styles.input}
-          type="password"
-          id="password1"
-          ref={refs.password1}
-          onChange={handlePasswordChange}
-        />
+        <div className={styles.passwordContainer}>
+          <input
+            className={styles.input}
+            type={showPassword ? 'text' : 'password'}
+            id="password1"
+            ref={refs.password1}
+            onChange={handlePasswordChange}
+          />
+          <div
+            className={styles.togglePassword}
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? '👁️' : '🙈'}
+          </div>
+        </div>
         {errors.password1 && (
           <ErrorMessages errors={{ password1: errors.password1 }} />
         )}
@@ -194,7 +192,7 @@ const UncontrolledForm: React.FC = () => {
         </label>
         <input
           className={styles.input}
-          type="password"
+          type={showPassword ? 'text' : 'password'}
           id="password2"
           ref={refs.password2}
         />
@@ -210,6 +208,7 @@ const UncontrolledForm: React.FC = () => {
           <option value="">Select...</option>
           <option value="male">Male</option>
           <option value="female">Female</option>
+          <option value="female">Other</option>
         </select>
         {errors.gender && <ErrorMessages errors={{ gender: errors.gender }} />}
       </div>

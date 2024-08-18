@@ -48,6 +48,4 @@ export const validationSchema = Yup.object({
       }
       return false;
     }),
-
-  country: Yup.string().required('Country is required'),
 });

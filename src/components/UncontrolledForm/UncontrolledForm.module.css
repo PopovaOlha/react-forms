@@ -101,3 +101,24 @@
 .input option {
   padding: 8px 12px;
 }
+
+.passwordContainer {
+  position: relative;
+  border: none;
+}
+
+.togglePassword {
+  position: absolute;
+  right: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: 1px solid white;
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+  padding: 1px;
+}
+.togglePassword button:focus {
+  outline: none;
+}

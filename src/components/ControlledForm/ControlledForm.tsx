@@ -41,6 +41,7 @@ const ControlledForm: React.FC = () => {
   const [passwordStrengthLevel, setPasswordStrengthLevel] = useState<number>(0);
   const [passwordStrengthClass, setPasswordStrengthClass] =
     useState<string>('weak');
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const {
     register,
@@ -48,7 +49,7 @@ const ControlledForm: React.FC = () => {
     setValue,
     formState: { errors },
   } = useForm<IFormInputs>({
-    resolver: yupResolver(validationSchema) as Resolver<IFormInputs>,
+    resolver: yupResolver(validationSchema) as unknown as Resolver<IFormInputs>,
     mode: 'onChange',
   });
 
@@ -144,12 +145,20 @@ const ControlledForm: React.FC = () => {
         <label className={styles.label} htmlFor="password1">
           Password:
         </label>
-        <input
-          className={styles.input}
-          type="password"
-          id="password1"
-          {...register('password1', { onChange: handlePasswordChange })}
-        />
+        <div className={styles.passwordContainer}>
+          <input
+            className={styles.input}
+            type={showPassword ? 'text' : 'password'}
+            id="password1"
+            {...register('password1', { onChange: handlePasswordChange })}
+          />
+          <div
+            className={styles.togglePassword}
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? '👁️' : '🙈'}
+          </div>
+        </div>
         {errors.password1 && (
           <p className={styles.errorMessage}>{errors.password1.message}</p>
         )}
@@ -166,7 +175,7 @@ const ControlledForm: React.FC = () => {
         </label>
         <input
           className={styles.input}
-          type="password"
+          type={showPassword ? 'text' : 'password'}
           id="password2"
           {...register('password2')}
         />
@@ -227,11 +236,7 @@ const ControlledForm: React.FC = () => {
         {errors.picture && (
           <p className={styles.errorMessage}>{errors.picture.message}</p>
         )}
-        {pictureURL && (
-          <div className={styles.picturePreview}>
-            <img src={pictureURL} alt="Preview" />
-          </div>
-        )}
+        {pictureURL && <div className={styles.picturePreview}></div>}
       </div>
       <button className={styles.submitButton} type="submit">
         Submit
