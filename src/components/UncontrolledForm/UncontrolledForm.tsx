@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { updateUncontrolledForm } from '../../features/formSlice';
 import { useFormRefs } from '../../utils/refs';
-import { validateField } from '../../utils/validation';
 import { ErrorMessages } from '../../components/ErrorMessages/ErrorMessages';
 import styles from './UncontrolledForm.module.css';
 import { FormErrors } from '../../types/interfaces';
@@ -27,8 +26,8 @@ const UncontrolledForm: React.FC = () => {
   const [passwordStrengthLevel, setPasswordStrengthLevel] = useState<number>(0);
   const [passwordStrengthClass, setPasswordStrengthClass] =
     useState<string>('weak');
-
   console.log(pictureURL);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -47,7 +46,6 @@ const UncontrolledForm: React.FC = () => {
         },
         { abortEarly: false },
       );
-
       const pictureFile = refs.picture.current?.files?.[0] || null;
       let pictureURL: string | null = null;
 
@@ -119,11 +117,9 @@ const UncontrolledForm: React.FC = () => {
 
     setPasswordStrengthLevel(strengthLevel);
     setPasswordStrengthClass(strengthClass);
-    validateField('password1', refs, setErrors);
   };
 
   const handleFileChange = () => {
-    validateField('picture', refs, setErrors);
     const file = refs.picture.current?.files?.[0] || null;
     if (file) {
       convertToBase64(file, (base64String) => {
@@ -149,26 +145,14 @@ const UncontrolledForm: React.FC = () => {
         <label className={styles.label} htmlFor="name">
           Name:
         </label>
-        <input
-          className={styles.input}
-          type="text"
-          id="name"
-          ref={refs.name}
-          onChange={() => validateField('name', refs, setErrors)}
-        />
+        <input className={styles.input} type="text" id="name" ref={refs.name} />
         {errors.name && <ErrorMessages errors={{ name: errors.name }} />}
       </div>
       <div className={styles.formGroup}>
         <label className={styles.label} htmlFor="age">
           Age:
         </label>
-        <input
-          className={styles.input}
-          type="number"
-          id="age"
-          ref={refs.age}
-          onChange={() => validateField('age', refs, setErrors)}
-        />
+        <input className={styles.input} type="number" id="age" ref={refs.age} />
         {errors.age && <ErrorMessages errors={{ age: errors.age }} />}
       </div>
       <div className={styles.formGroup}>
@@ -180,7 +164,6 @@ const UncontrolledForm: React.FC = () => {
           type="email"
           id="email"
           ref={refs.email}
-          onChange={() => validateField('email', refs, setErrors)}
         />
         {errors.email && <ErrorMessages errors={{ email: errors.email }} />}
       </div>
@@ -214,7 +197,6 @@ const UncontrolledForm: React.FC = () => {
           type="password"
           id="password2"
           ref={refs.password2}
-          onChange={() => validateField('password2', refs, setErrors)}
         />
         {errors.password2 && (
           <ErrorMessages errors={{ password2: errors.password2 }} />
@@ -224,12 +206,7 @@ const UncontrolledForm: React.FC = () => {
         <label className={styles.label} htmlFor="gender">
           Gender:
         </label>
-        <select
-          className={styles.input}
-          id="gender"
-          ref={refs.gender}
-          onChange={() => validateField('gender', refs, setErrors)}
-        >
+        <select className={styles.input} id="gender" ref={refs.gender}>
           <option value="">Select...</option>
           <option value="male">Male</option>
           <option value="female">Female</option>
@@ -240,12 +217,7 @@ const UncontrolledForm: React.FC = () => {
         <label className={styles.label} htmlFor="country">
           Country:
         </label>
-        <select
-          className={styles.input}
-          id="country"
-          ref={refs.country}
-          onChange={() => validateField('country', refs, setErrors)}
-        >
+        <select className={styles.input} id="country" ref={refs.country}>
           <option value="">Select...</option>
           {countries.map((country) => (
             <option key={country} value={country}>
@@ -264,7 +236,6 @@ const UncontrolledForm: React.FC = () => {
             type="checkbox"
             id="terms"
             ref={refs.terms}
-            onChange={() => validateField('terms', refs, setErrors)}
           />
           Accept Terms and Conditions
         </label>

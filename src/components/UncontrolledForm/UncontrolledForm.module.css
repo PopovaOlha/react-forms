@@ -17,8 +17,6 @@
   font-weight: bold;
 }
 
-
-
 .submitButton {
   width: 100%;
   padding: 10px;
@@ -37,6 +35,12 @@
 
 .formGroup {
   margin-bottom: 16px;
+}
+
+.errorMessage {
+  color: #e74c3c;
+  font-size: 14px;
+  margin-top: 5px;
 }
 
 .label {

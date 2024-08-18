@@ -47,8 +47,9 @@ const ControlledForm: React.FC = () => {
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm({
+  } = useForm<IFormInputs>({
     resolver: yupResolver(validationSchema) as Resolver<IFormInputs>,
+    mode: 'onChange',
   });
 
   const onSubmit: SubmitHandler<IFormInputs> = async (data) => {
