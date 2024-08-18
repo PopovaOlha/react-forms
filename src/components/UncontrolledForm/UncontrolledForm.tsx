@@ -26,9 +26,8 @@ const UncontrolledForm: React.FC = () => {
   const [passwordStrengthLevel, setPasswordStrengthLevel] = useState<number>(0);
   const [passwordStrengthClass, setPasswordStrengthClass] =
     useState<string>('weak');
-  console.log(pictureURL);
-
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  console.log(pictureURL);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -77,6 +76,10 @@ const UncontrolledForm: React.FC = () => {
       });
 
       navigate('/');
+      document.body.style.backgroundColor = 'lightblue';
+      setTimeout(() => {
+        document.body.style.backgroundColor = '';
+      }, 1000);
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         const newErrors: FormErrors = {};
@@ -251,9 +254,6 @@ const UncontrolledForm: React.FC = () => {
           ref={refs.picture}
           onChange={handleFileChange}
         />
-        {errors.picture && (
-          <ErrorMessages errors={{ picture: errors.picture }} />
-        )}
       </div>
       <button className={styles.submitButton} type="submit">
         Submit

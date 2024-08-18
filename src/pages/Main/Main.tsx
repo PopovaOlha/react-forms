@@ -17,7 +17,7 @@ const MainPage: React.FC = () => {
     <>
       <Header />
       <div className={styles.mainPage}>
-        <h1>Form Data</h1>
+        <h1 className={styles.title}>Form Data</h1>
         <div className={styles.tilesContainer}>
           <FormTile title="Uncontrolled Form" formData={uncontrolledForm} />
           <FormTile title="Controlled Form" formData={controlledForm} />

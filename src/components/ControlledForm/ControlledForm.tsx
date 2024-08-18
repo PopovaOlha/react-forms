@@ -59,11 +59,15 @@ const ControlledForm: React.FC = () => {
     if (pictureFile) {
       try {
         data.picture = await convertToBase64(pictureFile);
+        navigate('/', { state: { newData: data } });
+        document.body.style.backgroundColor = 'lightblue';
+      setTimeout(() => {
+        document.body.style.backgroundColor = '';
+      }, 1000);
       } catch (error) {
         console.error('Error converting file to base64:', error);
       }
     }
-
     dispatch(updateControlledForm({ ...data, pictureURL }));
     navigate('/', { state: { newData: data } });
   };
@@ -246,3 +250,5 @@ const ControlledForm: React.FC = () => {
 };
 
 export default ControlledForm;
+
+

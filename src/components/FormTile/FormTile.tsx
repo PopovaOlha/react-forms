@@ -41,7 +41,9 @@ const FormTile: React.FC<FormTileProps> = ({ title, formData }) => {
         <strong>Terms Accepted:</strong> {formData.terms ? 'Yes' : 'No'}
       </p>
       <p>
-        <strong>Picture:</strong>
+        <div>
+          <strong>Picture:</strong>
+        </div>
         {formData.pictureURL ? (
           <img src={imageURL} alt="Uploaded" className={styles.image} />
         ) : (
