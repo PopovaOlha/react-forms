@@ -1,10 +1,11 @@
 import { RefKeys } from '../types/interfaces';
 import { validationRules } from './validationRules';
+import { FormErrors } from '../types/interfaces';
 
 export const validateField = (
   fieldName: RefKeys,
   refs: ReturnType<typeof import('./refs').useFormRefs>,
-  setErrors: React.Dispatch<React.SetStateAction<{ [key: string]: string }>>,
+  setErrors: React.Dispatch<React.SetStateAction<FormErrors>>,
 ) => {
   let value: string | File | null = refs[fieldName].current?.value || '';
 

@@ -36,3 +36,7 @@ export interface FormTileProps {
     pictureURL: string | null;
   };
 }
+
+export type FormErrors = {
+  [key: string]: string | undefined;
+};

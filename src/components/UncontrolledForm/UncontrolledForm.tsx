@@ -6,7 +6,7 @@ import { useFormRefs } from '../../utils/refs';
 import { validateField } from '../../utils/validation';
 import { ErrorMessages } from '../../components/ErrorMessages/ErrorMessages';
 import styles from './UncontrolledForm.module.css';
-import { RefKeys } from '../../types/interfaces';
+import { FormErrors } from '../../types/interfaces';
 import { selectCountries } from '../../features/selectors';
 import { passwordStrength } from '../../utils/passwordStrength';
 import {
@@ -14,70 +14,92 @@ import {
   STRENGTH_STRONG,
   STRENGTH_WEAK,
 } from '../../constants/constants';
+import * as Yup from 'yup';
+import { validationSchema } from '../../utils/validationSchema';
 
 const UncontrolledForm: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const refs = useFormRefs();
   const countries = useSelector(selectCountries);
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [errors, setErrors] = useState<FormErrors>({});
   const [pictureURL, setPictureURL] = useState<string | null>(null);
   const [passwordStrengthLevel, setPasswordStrengthLevel] = useState<number>(0);
   const [passwordStrengthClass, setPasswordStrengthClass] =
     useState<string>('weak');
 
-  const convertToBase64 = (
-    file: File,
-    callback: (base64String: string) => void,
-  ) => {
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      callback(reader.result as string);
-    };
-    reader.readAsDataURL(file);
-  };
-
+  console.log(pictureURL);
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const isValid = (Object.keys(refs) as RefKeys[]).every((key) => {
-      validateField(key, refs, setErrors);
-      return !errors[key];
-    });
+    try {
+      await validationSchema.validate(
+        {
+          name: refs.name.current?.value,
+          email: refs.email.current?.value,
+          age: refs.age.current?.value,
+          password1: refs.password1.current?.value,
+          password2: refs.password2.current?.value,
+          gender: refs.gender.current?.value,
+          terms: refs.terms.current?.checked,
+          picture: refs.picture.current?.files?.[0],
+          country: refs.country.current?.value,
+        },
+        { abortEarly: false },
+      );
 
-    if (!isValid) return;
+      const pictureFile = refs.picture.current?.files?.[0] || null;
+      let pictureURL: string | null = null;
 
-    const pictureFile = refs.picture.current?.files?.[0] || null;
-    let pictureURL: string | null = null;
-
-    if (pictureFile) {
-      await new Promise<void>((resolve) => {
-        convertToBase64(pictureFile, (base64String) => {
-          pictureURL = base64String;
-          resolve();
+      if (pictureFile) {
+        await new Promise<void>((resolve) => {
+          convertToBase64(pictureFile, (base64String) => {
+            pictureURL = base64String;
+            resolve();
+          });
         });
+      }
+
+      dispatch(
+        updateUncontrolledForm({
+          name: refs.name.current?.value || '',
+          email: refs.email.current?.value || '',
+          age: refs.age.current?.value || '',
+          password1: refs.password1.current?.value || '',
+          password2: refs.password2.current?.value || '',
+          gender: refs.gender.current?.value || '',
+          terms: refs.terms.current?.checked || false,
+          pictureURL: pictureURL || null,
+          country: refs.country.current?.value || '',
+        }),
+      );
+
+      Object.values(refs).forEach((ref) => {
+        if (ref.current) ref.current.value = '';
       });
+
+      navigate('/');
+    } catch (err) {
+      if (err instanceof Yup.ValidationError) {
+        const newErrors: FormErrors = {
+          name: '',
+          age: '',
+          email: '',
+          password1: '',
+          password2: '',
+          gender: '',
+          terms: '',
+          picture: '',
+          country: '',
+        };
+        err.inner.forEach((error) => {
+          if (error.path) {
+            newErrors[error.path] = error.message;
+          }
+        });
+        setErrors(newErrors);
+      }
     }
-
-    dispatch(
-      updateUncontrolledForm({
-        name: refs.name.current?.value || '',
-        email: refs.email.current?.value || '',
-        age: refs.age.current?.value || '',
-        password1: refs.password1.current?.value || '',
-        password2: refs.password2.current?.value || '',
-        gender: refs.gender.current?.value || '',
-        terms: refs.terms.current?.checked || false,
-        pictureURL: pictureURL || null,
-        country: refs.country.current?.value || '',
-      }),
-    );
-
-    Object.values(refs).forEach((ref) => {
-      if (ref.current) ref.current.value = '';
-    });
-
-    navigate('/');
   };
 
   const handlePasswordChange = () => {
@@ -99,6 +121,7 @@ const UncontrolledForm: React.FC = () => {
     setPasswordStrengthClass(strengthClass);
     validateField('password1', refs, setErrors);
   };
+
   const handleFileChange = () => {
     validateField('picture', refs, setErrors);
     const file = refs.picture.current?.files?.[0] || null;
@@ -107,6 +130,17 @@ const UncontrolledForm: React.FC = () => {
         setPictureURL(base64String);
       });
     }
+  };
+
+  const convertToBase64 = (
+    file: File,
+    callback: (base64String: string) => void,
+  ) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      callback(reader.result as string);
+    };
+    reader.readAsDataURL(file);
   };
 
   return (
@@ -199,9 +233,36 @@ const UncontrolledForm: React.FC = () => {
           <option value="">Select...</option>
           <option value="male">Male</option>
           <option value="female">Female</option>
-          <option value="other">Other</option>
         </select>
         {errors.gender && <ErrorMessages errors={{ gender: errors.gender }} />}
+      </div>
+      <div className={styles.formGroup}>
+        <label className={styles.label} htmlFor="terms">
+          Accept Terms:
+        </label>
+        <input
+          className={styles.checkbox}
+          type="checkbox"
+          id="terms"
+          ref={refs.terms}
+          onChange={() => validateField('terms', refs, setErrors)}
+        />
+        {errors.terms && <ErrorMessages errors={{ terms: errors.terms }} />}
+      </div>
+      <div className={styles.formGroup}>
+        <label className={styles.label} htmlFor="picture">
+          Profile Picture:
+        </label>
+        <input
+          className={styles.input}
+          type="file"
+          id="picture"
+          ref={refs.picture}
+          onChange={handleFileChange}
+        />
+        {errors.picture && (
+          <ErrorMessages errors={{ picture: errors.picture }} />
+        )}
       </div>
       <div className={styles.formGroup}>
         <label className={styles.label} htmlFor="country">
@@ -223,34 +284,6 @@ const UncontrolledForm: React.FC = () => {
         {errors.country && (
           <ErrorMessages errors={{ country: errors.country }} />
         )}
-      </div>
-      <div className={styles.formGroup}>
-        <label className={styles.label} htmlFor="terms">
-          <input
-            type="checkbox"
-            id="terms"
-            ref={refs.terms}
-            onChange={() => validateField('terms', refs, setErrors)}
-          />
-          Accept Terms and Conditions
-        </label>
-        {errors.terms && <ErrorMessages errors={{ terms: errors.terms }} />}
-      </div>
-      <div className={styles.formGroup}>
-        <label className={styles.label} htmlFor="picture">
-          Upload Picture:
-        </label>
-        <input
-          className={styles.input}
-          type="file"
-          id="picture"
-          ref={refs.picture}
-          onChange={handleFileChange}
-        />
-        {errors.picture && (
-          <ErrorMessages errors={{ picture: errors.picture }} />
-        )}
-        {pictureURL && <div className={styles.picturePreview}></div>}
       </div>
       <button className={styles.submitButton} type="submit">
         Submit
