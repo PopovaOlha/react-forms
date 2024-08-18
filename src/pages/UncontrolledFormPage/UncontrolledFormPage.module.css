@@ -1,0 +1,37 @@
+.container {
+  padding: 20px;
+}
+
+.header {
+  margin-bottom: 20px;
+}
+
+.nav ul {
+  text-decoration: none;
+  font-size: 18px;
+  color: #333;
+  margin-right: 25px;
+  transition: color 0.3s ease-in-out;
+}
+
+.nav li {
+  list-style-type: none;
+}
+
+.nav a {
+  text-decoration: none;
+  font-size: 18px;
+  color: #333;
+  transition: color 0.3s ease-in-out;
+}
+
+.nav a:hover {
+  color: #e55a4f;
+}
+
+.main {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}

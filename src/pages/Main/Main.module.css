@@ -1,0 +1,13 @@
+.mainPage {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.tilesContainer {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 20px;
+}
+

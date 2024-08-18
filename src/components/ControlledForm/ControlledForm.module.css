@@ -1,0 +1,127 @@
+.form {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.formGroup {
+  margin-bottom: 15px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.input {
+  width: 80%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.errorMessage {
+  color: #e74c3c;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.submitButton {
+  width: 100%;
+  padding: 10px;
+  background-color: #ff6f61;
+  color: #ffffff;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.submitButton:hover {
+  background-color: #e55a4f;
+}
+
+.passwordStrength {
+  height: 8px;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  margin-top: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.strengthIndicator {
+  height: 100%;
+  background-color: #4caf50;
+  transition: width 0.3s ease-in-out;
+}
+
+.strengthIndicator.weak {
+  background-color: #f44336;
+}
+
+.strengthIndicator.moderate {
+  background-color: #ff9800;
+}
+
+.strengthIndicator.strong {
+  background-color: #56e016;
+}
+
+.picturePreview {
+  margin-top: 10px;
+  max-width: 100%;
+  height: auto;
+}
+.input {
+  font-size: 16px;
+  color: #333;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px 12px;
+  width: 80%;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease-in-out;
+}
+
+.input:focus {
+  border-color: #e55a4f;
+  outline: none;
+}
+
+.input option {
+  padding: 8px 12px;
+}
+
+.passwordContainer {
+  position: relative;
+  border: none;
+}
+
+.togglePassword {
+  position: absolute;
+  right: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: 1px solid white;
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+  padding: 1px;
+}
+.togglePassword button:focus {
+  outline: none;
+}
+
+.newData {
+  border: 2px solid #4caf50;
+  background-color: #e8f5e9;
+}
