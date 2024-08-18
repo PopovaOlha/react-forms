@@ -1,6 +1,5 @@
 import * as Yup from 'yup';
-
-type FileValue = File;
+import { FileValue } from '../types/interfaces';
 
 export const validationSchema = Yup.object({
   name: Yup.string()
@@ -39,7 +38,7 @@ export const validationSchema = Yup.object({
     .required('Profile picture is required')
     .test('fileSize', 'File is too large', (value) => {
       if (value instanceof File) {
-        return value.size <= 2000000; // 2 MB
+        return value.size <= 2000000;
       }
       return false;
     })

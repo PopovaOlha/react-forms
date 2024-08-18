@@ -5,10 +5,10 @@ import styles from './UncontrolledFormPage.module.css';
 
 const UncontrolledFormPage: React.FC = () => {
   return (
-    <div className={styles.page}>
-      <header>
+    <div className={styles.container}>
+      <header className={styles.header}>
         <nav>
-          <ul className={styles.navList}>
+          <ul className={styles.nav}>
             <li className={styles.navItem}>
               <Link className={styles.navLink} to="/">
                 Back to Main
@@ -25,4 +25,5 @@ const UncontrolledFormPage: React.FC = () => {
     </div>
   );
 };
+
 export default UncontrolledFormPage;

@@ -1,16 +1,18 @@
 export interface IFormInputs {
   name: string;
-  age: string;
+  age: string | number;
   email: string;
   password1: string;
   password2: string;
   gender: string;
   country: string;
   terms: boolean;
-  picture: string | null;
+  picture: string | File | null;
 }
 
 export interface FormState extends IFormInputs {}
+
+export type FileValue = File;
 
 export type RefKeys =
   | 'name'
@@ -27,12 +29,12 @@ export interface FormTileProps {
   title: string;
   formData: {
     name: string;
-    age: string;
+    age: string | number;
     email: string;
     password1: string;
     password2: string;
     gender: string;
-    terms: boolean;
+    terms: NonNullable<boolean | undefined>;
     pictureURL: string | null;
   };
 }

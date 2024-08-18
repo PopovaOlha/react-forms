@@ -46,3 +46,57 @@
 .submitButton:hover {
   background-color: #e55a4f;
 }
+
+
+.passwordStrength {
+  height: 8px;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  margin-top: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.strengthIndicator {
+  height: 100%;
+  background-color: #4caf50;
+  transition: width 0.3s ease-in-out;
+}
+
+.strengthIndicator.weak {
+  background-color: #f44336;
+}
+
+.strengthIndicator.moderate {
+  background-color: #ff9800;
+}
+
+.strengthIndicator.strong {
+  background-color: #56e016;
+}
+
+.picturePreview {
+  margin-top: 10px;
+  max-width: 100%;
+  height: auto;
+}
+.input {
+  font-size: 16px;
+  color: #333;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px 12px;
+  width: 80%;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease-in-out;
+}
+
+.input:focus {
+  border-color: #e55a4f;
+  outline: none;
+}
+
+.input option {
+  padding: 8px 12px;
+}

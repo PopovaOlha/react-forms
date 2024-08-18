@@ -17,13 +17,7 @@
   font-weight: bold;
 }
 
-.input {
-  width: 80%;
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
+
 
 .submitButton {
   width: 100%;
@@ -82,4 +76,24 @@
   margin-top: 10px;
   max-width: 100%;
   height: auto;
+}
+.input {
+  font-size: 16px;
+  color: #333;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px 12px;
+  width: 80%;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease-in-out;
+}
+
+.input:focus {
+  border-color: #e55a4f;
+  outline: none;
+}
+
+.input option {
+  padding: 8px 12px;
 }

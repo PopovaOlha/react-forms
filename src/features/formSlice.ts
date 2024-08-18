@@ -9,7 +9,7 @@ interface FormsState {
 const initialState: FormsState = {
   controlledForm: {
     name: '',
-    age: '',
+    age: 0,
     email: '',
     password1: '',
     password2: '',
@@ -20,7 +20,7 @@ const initialState: FormsState = {
   },
   uncontrolledForm: {
     name: '',
-    age: '',
+    age: 0,
     email: '',
     password1: '',
     password2: '',

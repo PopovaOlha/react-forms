@@ -237,34 +237,6 @@ const UncontrolledForm: React.FC = () => {
         {errors.gender && <ErrorMessages errors={{ gender: errors.gender }} />}
       </div>
       <div className={styles.formGroup}>
-        <label className={styles.label} htmlFor="terms">
-          Accept Terms:
-        </label>
-        <input
-          className={styles.checkbox}
-          type="checkbox"
-          id="terms"
-          ref={refs.terms}
-          onChange={() => validateField('terms', refs, setErrors)}
-        />
-        {errors.terms && <ErrorMessages errors={{ terms: errors.terms }} />}
-      </div>
-      <div className={styles.formGroup}>
-        <label className={styles.label} htmlFor="picture">
-          Profile Picture:
-        </label>
-        <input
-          className={styles.input}
-          type="file"
-          id="picture"
-          ref={refs.picture}
-          onChange={handleFileChange}
-        />
-        {errors.picture && (
-          <ErrorMessages errors={{ picture: errors.picture }} />
-        )}
-      </div>
-      <div className={styles.formGroup}>
         <label className={styles.label} htmlFor="country">
           Country:
         </label>
@@ -283,6 +255,34 @@ const UncontrolledForm: React.FC = () => {
         </select>
         {errors.country && (
           <ErrorMessages errors={{ country: errors.country }} />
+        )}
+      </div>
+      <div className={styles.formGroup}>
+        <label className={styles.label} htmlFor="terms">
+          <input
+            className={styles.checkbox}
+            type="checkbox"
+            id="terms"
+            ref={refs.terms}
+            onChange={() => validateField('terms', refs, setErrors)}
+          />
+          Accept Terms and Conditions
+        </label>
+        {errors.terms && <ErrorMessages errors={{ terms: errors.terms }} />}
+      </div>
+      <div className={styles.formGroup}>
+        <label className={styles.label} htmlFor="picture">
+          Upload Picture:
+        </label>
+        <input
+          className={styles.input}
+          type="file"
+          id="picture"
+          ref={refs.picture}
+          onChange={handleFileChange}
+        />
+        {errors.picture && (
+          <ErrorMessages errors={{ picture: errors.picture }} />
         )}
       </div>
       <button className={styles.submitButton} type="submit">
